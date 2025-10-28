@@ -1,0 +1,74 @@
+[project]
+name = "bream-delta"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "bream",
+    "delta-spark>=2.0.0,<4.0.0",
+    "pyspark>=3.4.0,<4.0.0",
+]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    # standard:
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "docs"
+]
+
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D213", "TD001", "TD002", "TD003", "FIX002", "N812", "PD901"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "ANN001", "ANN201", "ARG001", "B018", "S101", "TRY301", "FBT001", "FBT002", "PT006"]
+"bream/demo_scripts/*" = ["T201"]
+
+[tool.coverage.report]
+exclude_also = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:"
+]
+
+[tool.uv.sources]
+bream = { git = "https://github.com/adamcallison/bream.git", rev = "v0.1.0" }
+
+[dependency-groups]
+dev = [
+    "coverage>=7.11.0",
+    "mypy>=1.18.2",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.3",
+]

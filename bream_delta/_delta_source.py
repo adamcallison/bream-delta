@@ -4,8 +4,9 @@ from typing import NamedTuple, cast
 
 from bream.core import Batch, BatchRequest, Pathlike, Source
 from delta import DeltaTable
-from pyspark.sql import DataFrame, Row, SparkSession
+from pyspark.sql import Column, DataFrame, Row, SparkSession
 from pyspark.sql import functions as F
+from pyspark.sql import types as T
 
 _DELTA_FORMAT = "delta"
 _HISTORY_VERSION_COL = "version"
@@ -119,9 +120,9 @@ class DeltaTableChangeFeedSource(Source):
             .load(str(self._path))
         ).select(
             "*",
-            F.lit(_CHANGE_TYPE_INSERT).alias(_CHANGE_TYPE_COL),
-            F.lit(at_version).alias(_COMMIT_VERSION_COL),
-            F.lit(at_timestamp).alias(_COMMIT_TIMESTAMP_COL),
+            _nullable(F.lit(_CHANGE_TYPE_INSERT)).alias(_CHANGE_TYPE_COL),
+            _nullable(F.lit(at_version)).cast(T.LongType()).alias(_COMMIT_VERSION_COL),
+            _nullable(F.lit(at_timestamp)).alias(_COMMIT_TIMESTAMP_COL),
         )
         return df, at_version
 
@@ -147,3 +148,7 @@ class DeltaTableChangeFeedSource(Source):
             [_DeltaHistoryRow(r.version, r.timestamp, r.operation) for r in rows],
             key=lambda r: r.version,
         )
+
+
+def _nullable(col: Column) -> Column:
+    return F.when(F.lit(True), col)  # noqa: FBT003

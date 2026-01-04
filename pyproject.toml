@@ -10,6 +10,9 @@ dependencies = [
     "pyspark>=3.4.0,<4.0.0",
 ]
 
+[tool.setuptools.packages.find]
+include = ["bream.sources.deltachangefeed"]
+
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [

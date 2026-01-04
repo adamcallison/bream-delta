@@ -2,7 +2,7 @@ name: Unit test with coverage
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "namespace_package2" ]
   pull_request:
     branches: [ "main" ]
 
